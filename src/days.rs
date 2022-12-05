@@ -5,6 +5,8 @@ mod day01;
 mod day02;
 mod day03;
 mod day04;
+mod day05;
+// Insert other day modules above
 
 pub fn run_day(day: u8) -> Option<u8> {
     let (example_input, puzzle_input) = get_inputs(day);
@@ -37,6 +39,8 @@ fn get_day(day: u8) -> Option<Box<dyn day::Day>> {
         2 => Some(Box::new(day02::Day02{})),
         3 => Some(Box::new(day03::Day03{})),
         4 => Some(Box::new(day04::Day04{})),
+        5 => Some(Box::new(day05::Day05{})),
+        // Insert other day mappings above
         _ => panic!("Unknown day found"),
     }
 }
