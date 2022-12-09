@@ -7,6 +7,9 @@ mod day03;
 mod day04;
 mod day05;
 mod day06;
+mod day07;
+mod day08;
+mod day09;
 // Insert other day modules above
 
 pub fn run_day(day: u8) -> Option<u8> {
@@ -42,6 +45,9 @@ fn get_day(day: u8) -> Option<Box<dyn day::Day>> {
         4 => Some(Box::new(day04::Day04{})),
         5 => Some(Box::new(day05::Day05{})),
         6 => Some(Box::new(day06::Day06{})),
+        7 => Some(Box::new(day07::Day07{})),
+        8 => Some(Box::new(day08::Day08{})),
+        9 => Some(Box::new(day09::Day09{})),
         // Insert other day mappings above
         _ => panic!("Unknown day found"),
     }
