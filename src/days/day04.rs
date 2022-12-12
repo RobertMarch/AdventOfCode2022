@@ -8,7 +8,10 @@ struct Elf {
 
 impl Elf {
     fn get_from_input(input: &str) -> Elf {
-        let elf_range: Vec<u32> = input.split('-').map(|border| border.parse().unwrap()).collect();
+        let elf_range: Vec<u32> = input
+            .split('-')
+            .map(|border| border.parse().unwrap())
+            .collect();
 
         Elf {
             start_index: elf_range[0],
@@ -32,7 +35,10 @@ struct ElfPair {
 
 impl ElfPair {
     fn get_from_line(line: &str) -> ElfPair {
-        let elves: Vec<Elf> = line.split(',').map(|elf| Elf::get_from_input(elf)).collect();
+        let elves: Vec<Elf> = line
+            .split(',')
+            .map(|elf| Elf::get_from_input(elf))
+            .collect();
 
         ElfPair {
             first_elf: elves[0],
@@ -41,7 +47,8 @@ impl ElfPair {
     }
 
     fn pairs_wholly_overlap(&self) -> bool {
-        self.first_elf.wholly_contains_other_elf(&self.second_elf) || self.second_elf.wholly_contains_other_elf(&self.first_elf)
+        self.first_elf.wholly_contains_other_elf(&self.second_elf)
+            || self.second_elf.wholly_contains_other_elf(&self.first_elf)
     }
 
     fn pairs_overlap(&self) -> bool {

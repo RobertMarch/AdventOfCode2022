@@ -1,4 +1,4 @@
-use std::collections::{HashSet, HashMap};
+use std::collections::{HashMap, HashSet};
 
 use crate::days::day::Day;
 
@@ -15,14 +15,14 @@ impl Day for Day08 {
 
         for x in 0..width {
             visible_trees.insert((x, 0));
-            visible_trees.insert((x, height-1));
+            visible_trees.insert((x, height - 1));
         }
         for y in 0..height {
             visible_trees.insert((0, y));
-            visible_trees.insert((width-1, y));
+            visible_trees.insert((width - 1, y));
         }
 
-        for row_index in 1..height-1 {
+        for row_index in 1..height - 1 {
             let row = lines[row_index].to_string();
 
             let mut left_index = 0;
@@ -50,8 +50,11 @@ impl Day for Day08 {
                 }
             }
         }
-        for col_index in 1..width-1 {
-            let col = lines.iter().map(|line| str_get_nth(&line, col_index)).collect();
+        for col_index in 1..width - 1 {
+            let col = lines
+                .iter()
+                .map(|line| str_get_nth(&line, col_index))
+                .collect();
 
             let mut top_index = 0;
             let mut top_height = string_get_nth(&col, top_index);
@@ -81,7 +84,7 @@ impl Day for Day08 {
 
         visible_trees.len().to_string()
     }
-    
+
     fn solve_b(&self, file: &String) -> String {
         let mut tree_visibilities: HashMap<(isize, isize), isize> = HashMap::new();
 
@@ -92,14 +95,14 @@ impl Day for Day08 {
 
         let directions = vec![(0, 1), (0, -1), (1, 0), (-1, 0)];
 
-        for x in 1..width-1 {
-            for y in 1..height-1 {
+        for x in 1..width - 1 {
+            for y in 1..height - 1 {
                 let tree_height = get_tree_height(&lines, x, y);
                 let mut tree_vis = 1;
                 for direction in &directions {
                     let mut x_pos = x;
                     let mut y_pos = y;
-                    while x_pos > 0 && x_pos < width-1 && y_pos > 0 && y_pos < height-1 {
+                    while x_pos > 0 && x_pos < width - 1 && y_pos > 0 && y_pos < height - 1 {
                         x_pos += direction.0;
                         y_pos += direction.1;
 
@@ -119,7 +122,13 @@ impl Day for Day08 {
 }
 
 fn get_tree_height(lines: &Vec<&str>, x_pos: isize, y_pos: isize) -> char {
-    lines.iter().nth(y_pos.try_into().unwrap()).unwrap().chars().nth(x_pos.try_into().unwrap()).unwrap()
+    lines
+        .iter()
+        .nth(y_pos.try_into().unwrap())
+        .unwrap()
+        .chars()
+        .nth(x_pos.try_into().unwrap())
+        .unwrap()
 }
 
 fn str_get_nth(string: &str, index: usize) -> char {

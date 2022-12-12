@@ -15,7 +15,12 @@ impl Day for Day03 {
             let compartment_1_set: HashSet<char> = compartment1.chars().into_iter().collect();
             let compartment_2_set: HashSet<char> = compartment2.chars().into_iter().collect();
 
-            let repeated_char: char = compartment_1_set.intersection(&compartment_2_set).into_iter().next().unwrap().clone();
+            let repeated_char: char = compartment_1_set
+                .intersection(&compartment_2_set)
+                .into_iter()
+                .next()
+                .unwrap()
+                .clone();
 
             total_priority += convert_char_to_priority(repeated_char);
         }
@@ -39,7 +44,12 @@ impl Day for Day03 {
                     current_group_items = current_group_items.bitand(&elf_char_set);
                 }
                 2 => {
-                    let common_char: char = current_group_items.intersection(&elf_char_set).into_iter().next().unwrap().clone();
+                    let common_char: char = current_group_items
+                        .intersection(&elf_char_set)
+                        .into_iter()
+                        .next()
+                        .unwrap()
+                        .clone();
                     total_priority += convert_char_to_priority(common_char);
                 }
                 _ => {
