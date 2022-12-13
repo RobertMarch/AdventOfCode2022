@@ -1,6 +1,8 @@
+use std::cmp::Ordering;
+
 use crate::days::day::Day;
 
-use serde_json::{self, json};
+use serde_json::{self, json, Value};
 
 pub struct Day13 {}
 
@@ -14,8 +16,7 @@ impl Day for Day13 {
             let first_data: serde_json::Value = serde_json::from_str(first).unwrap();
             let second_data: serde_json::Value = serde_json::from_str(second).unwrap();
 
-            let pair_result = are_pair_sorted(&first_data, &second_data);
-            if pair_result.is_none() || pair_result.unwrap() {
+            if are_pair_sorted(&first_data, &second_data).is_le() {
                 result += pair_index + 1;
             }
         }
@@ -23,17 +24,28 @@ impl Day for Day13 {
         result.to_string()
     }
     
-    fn solve_b(&self, _file: &String) -> String {
-        String::from("Not yet implemented")
+    fn solve_b(&self, file: &String) -> String {
+        let mut packets: Vec<serde_json::Value> = file.split("\n")
+            .filter(|line| line.trim().len() > 0)
+            .map(|v| serde_json::from_str(v).unwrap())
+            .collect();
+        let divider_2: Value = "[[2]]".parse().expect("Failed to create divider packet");
+        let divider_6: Value = "[[6]]".parse().expect("Failed to create divider packet");
+        packets.push(divider_2.clone());
+        packets.push(divider_6.clone());
+        
+        packets.sort_by(are_pair_sorted);
+
+        let divider_2_position = packets.iter().position(|packet| packet.to_string() == divider_2.to_string()).unwrap() + 1;
+        let divider_6_position = packets.iter().position(|packet| packet.to_string() == divider_6.to_string()).unwrap() + 1;
+
+        (divider_2_position * divider_6_position).to_string()
     }
 }
 
-fn are_pair_sorted(first: &serde_json::Value, second: &serde_json::Value) -> Option<bool> {
+fn are_pair_sorted(first: &serde_json::Value, second: &serde_json::Value) -> Ordering {
     if first.is_number() && second.is_number() {
-        if first.as_u64() == second.as_u64() {
-            return None;
-        }
-        return Some(first.as_u64() < second.as_u64());
+        return first.as_u64().cmp(&second.as_u64());
     } else if first.is_number() && second.is_array() {
         return are_pair_sorted(&json!([first.as_u64()]), second);
     } else if first.is_array() && second.is_number() {
@@ -45,12 +57,10 @@ fn are_pair_sorted(first: &serde_json::Value, second: &serde_json::Value) -> Opt
         for i in 0..first_array.len().min(second_array.len()) {
             let comp_result = are_pair_sorted(first_array.get(i).unwrap(), second_array.get(i).unwrap());
             
-            if comp_result.is_some() {
+            if !comp_result.is_eq() {
                 return comp_result;
             }
         }
-        let len_diff = first_array.len().cmp(&second_array.len());
-        
-        return if len_diff.is_eq() { None } else { Some(len_diff.is_lt()) }
+        return first_array.len().cmp(&second_array.len());
     }
 }
