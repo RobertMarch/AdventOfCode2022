@@ -1,4 +1,5 @@
 use std::fs::read_to_string;
+use std::time::Instant;
 
 mod day;
 mod day01;
@@ -15,6 +16,7 @@ mod day11;
 mod day12;
 mod day13;
 mod day14;
+mod day15;
 // Insert other day modules above
 
 pub fn run_day(day: u8) -> Option<u8> {
@@ -25,17 +27,25 @@ pub fn run_day(day: u8) -> Option<u8> {
         "Example input result: {}",
         get_day(day)?.solve_a(&example_input)
     );
+
+    let now = Instant::now();
     println!(
         "Puzzle input result: {}",
         get_day(day)?.solve_a(&puzzle_input)
     );
+    let elapsed = now.elapsed();
+    println!("Elapsed: {:.2?}", elapsed);
 
     println!("\nDay {} part b", day);
     println!("Example result: {}", get_day(day)?.solve_b(&example_input));
+    
+    let now = Instant::now();
     println!(
         "Puzzle input result: {}",
         get_day(day)?.solve_b(&puzzle_input)
     );
+    let elapsed = now.elapsed();
+    println!("Elapsed: {:.2?}", elapsed);
 
     Some(1)
 }
@@ -73,6 +83,7 @@ fn get_day(day: u8) -> Option<Box<dyn day::Day>> {
         12 => Some(Box::new(day12::Day12 {})),
         13 => Some(Box::new(day13::Day13 {})),
         14 => Some(Box::new(day14::Day14 {})),
+        15 => Some(Box::new(day15::Day15 {})),
         // Insert other day mappings above
         _ => panic!("Unknown day found"),
     }
