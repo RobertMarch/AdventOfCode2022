@@ -17,6 +17,7 @@ mod day12;
 mod day13;
 mod day14;
 mod day15;
+mod day16;
 // Insert other day modules above
 
 pub fn run_day(day: u8) -> Option<u8> {
@@ -38,7 +39,7 @@ pub fn run_day(day: u8) -> Option<u8> {
 
     println!("\nDay {} part b", day);
     println!("Example result: {}", get_day(day)?.solve_b(&example_input));
-    
+
     let now = Instant::now();
     println!(
         "Puzzle input result: {}",
@@ -84,6 +85,7 @@ fn get_day(day: u8) -> Option<Box<dyn day::Day>> {
         13 => Some(Box::new(day13::Day13 {})),
         14 => Some(Box::new(day14::Day14 {})),
         15 => Some(Box::new(day15::Day15 {})),
+        16 => Some(Box::new(day16::Day16 {})),
         // Insert other day mappings above
         _ => panic!("Unknown day found"),
     }
