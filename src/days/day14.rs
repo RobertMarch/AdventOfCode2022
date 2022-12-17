@@ -23,7 +23,7 @@ impl Day for Day14 {
 
         (filled_points.len() - rock_length).to_string()
     }
-    
+
     fn solve_b(&self, file: &String) -> String {
         let mut filled_points: HashSet<Point> = parse_input(file);
         let rock_length: usize = filled_points.len();
@@ -46,11 +46,7 @@ impl Day for Day14 {
 }
 
 fn drop_sand(filled_points: &HashSet<Point>, max_rock_depth: isize) -> Point {
-    let sand_moves: Vec<Point> = vec![
-        Point::new(0, 1),
-        Point::new(-1, 1),
-        Point::new(1, 1),
-    ];
+    let sand_moves: Vec<Point> = vec![Point::new(0, 1), Point::new(-1, 1), Point::new(1, 1)];
 
     let mut sand_location = Point::new(500, 0);
     let mut can_move = true;
@@ -72,7 +68,6 @@ fn drop_sand(filled_points: &HashSet<Point>, max_rock_depth: isize) -> Point {
     sand_location
 }
 
-
 #[derive(Debug, Clone, Copy, Eq, Hash, PartialEq)]
 struct Point {
     x: isize,
@@ -92,7 +87,7 @@ impl Point {
 }
 
 fn add_points(a: &Point, b: &Point) -> Point {
-    Point { 
+    Point {
         x: a.x + b.x,
         y: a.y + b.y,
     }
@@ -102,14 +97,17 @@ fn parse_input(file: &String) -> HashSet<Point> {
     let mut rock_points: HashSet<Point> = HashSet::new();
 
     for line in file.lines() {
-        let corners: Vec<Point> = line.split(" -> ").map(|corner_string| Point::from_string(corner_string)).collect();
+        let corners: Vec<Point> = line
+            .split(" -> ")
+            .map(|corner_string| Point::from_string(corner_string))
+            .collect();
 
-        for i in 0..corners.len()-1 {
+        for i in 0..corners.len() - 1 {
             let start = corners.get(i).unwrap();
             let end = corners.get(i + 1).unwrap();
 
-            for x in start.x.min(end.x)..start.x.max(end.x)+1 {
-                for y in start.y.min(end.y)..start.y.max(end.y)+1 {
+            for x in start.x.min(end.x)..start.x.max(end.x) + 1 {
+                for y in start.y.min(end.y)..start.y.max(end.y) + 1 {
                     rock_points.insert(Point::new(x, y));
                 }
             }

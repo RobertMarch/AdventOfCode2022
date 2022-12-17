@@ -20,33 +20,47 @@ mod day15;
 mod day16;
 // Insert other day modules above
 
-pub fn run_day(day: u8) -> Option<u8> {
+pub fn run_day(day: u8, part: String, input: String) -> Option<u8> {
     let (example_input, puzzle_input) = get_inputs(day);
 
-    println!("Day {} part a", day);
-    println!(
-        "Example input result: {}",
-        get_day(day)?.solve_a(&example_input)
-    );
+    if part.eq("a") || part.eq("both") {
+        println!("Day {} part a", day);
 
-    let now = Instant::now();
-    println!(
-        "Puzzle input result: {}",
-        get_day(day)?.solve_a(&puzzle_input)
-    );
-    let elapsed = now.elapsed();
-    println!("Elapsed: {:.2?}", elapsed);
+        if input.eq("example") || input.eq("both") {
+            println!(
+                "Example input result: {}",
+                get_day(day)?.solve_a(&example_input)
+            );
+        }
 
-    println!("\nDay {} part b", day);
-    println!("Example result: {}", get_day(day)?.solve_b(&example_input));
+        if input.eq("puzzle") || input.eq("both") {
+            let now = Instant::now();
+            println!(
+                "Puzzle input result: {}",
+                get_day(day)?.solve_a(&puzzle_input)
+            );
+            let elapsed = now.elapsed();
+            println!("Elapsed: {:.2?}", elapsed);
+        }
+    }
 
-    let now = Instant::now();
-    println!(
-        "Puzzle input result: {}",
-        get_day(day)?.solve_b(&puzzle_input)
-    );
-    let elapsed = now.elapsed();
-    println!("Elapsed: {:.2?}", elapsed);
+    if part.eq("b") || part.eq("both") {
+        println!("\nDay {} part b", day);
+
+        if input.eq("example") || input.eq("both") {
+            println!("Example result: {}", get_day(day)?.solve_b(&example_input));
+        }
+
+        if input.eq("puzzle") || input.eq("both") {
+            let now = Instant::now();
+            println!(
+                "Puzzle input result: {}",
+                get_day(day)?.solve_b(&puzzle_input)
+            );
+            let elapsed = now.elapsed();
+            println!("Elapsed: {:.2?}", elapsed);
+        }
+    }
 
     Some(1)
 }

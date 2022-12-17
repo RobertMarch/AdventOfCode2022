@@ -23,9 +23,10 @@ impl Day for Day13 {
 
         result.to_string()
     }
-    
+
     fn solve_b(&self, file: &String) -> String {
-        let mut packets: Vec<serde_json::Value> = file.split("\n")
+        let mut packets: Vec<serde_json::Value> = file
+            .split("\n")
             .filter(|line| line.trim().len() > 0)
             .map(|v| serde_json::from_str(v).unwrap())
             .collect();
@@ -33,11 +34,19 @@ impl Day for Day13 {
         let divider_6: Value = "[[6]]".parse().expect("Failed to create divider packet");
         packets.push(divider_2.clone());
         packets.push(divider_6.clone());
-        
+
         packets.sort_by(are_pair_sorted);
 
-        let divider_2_position = packets.iter().position(|packet| packet.to_string() == divider_2.to_string()).unwrap() + 1;
-        let divider_6_position = packets.iter().position(|packet| packet.to_string() == divider_6.to_string()).unwrap() + 1;
+        let divider_2_position = packets
+            .iter()
+            .position(|packet| packet.to_string() == divider_2.to_string())
+            .unwrap()
+            + 1;
+        let divider_6_position = packets
+            .iter()
+            .position(|packet| packet.to_string() == divider_6.to_string())
+            .unwrap()
+            + 1;
 
         (divider_2_position * divider_6_position).to_string()
     }
@@ -53,10 +62,11 @@ fn are_pair_sorted(first: &serde_json::Value, second: &serde_json::Value) -> Ord
     } else {
         let first_array = first.as_array().unwrap();
         let second_array = second.as_array().unwrap();
-        
+
         for i in 0..first_array.len().min(second_array.len()) {
-            let comp_result = are_pair_sorted(first_array.get(i).unwrap(), second_array.get(i).unwrap());
-            
+            let comp_result =
+                are_pair_sorted(first_array.get(i).unwrap(), second_array.get(i).unwrap());
+
             if !comp_result.is_eq() {
                 return comp_result;
             }

@@ -1,6 +1,6 @@
 use std::collections::HashSet;
 
-use regex::{Regex, Captures};
+use regex::{Captures, Regex};
 
 use crate::days::day::Day;
 
@@ -15,18 +15,25 @@ impl Day for Day15 {
         let ranges = get_merged_ranges_for_line(&sensors, target_y);
 
         let total_size: isize = ranges.iter().map(|range| range.end - range.start + 1).sum();
-        let beacons_on_target_line: usize = beacons.iter().filter(|beacon| beacon.y == target_y).collect::<Vec<&Point>>().len();
+        let beacons_on_target_line: usize = beacons
+            .iter()
+            .filter(|beacon| beacon.y == target_y)
+            .collect::<Vec<&Point>>()
+            .len();
 
         (total_size as usize - beacons_on_target_line).to_string()
     }
-    
+
     fn solve_b(&self, file: &String) -> String {
         let (sensors, _beacons): (Vec<Sensor>, HashSet<Point>) = parse_sensors(file);
 
         for target_y in 0..40000001 {
             let ranges = get_merged_ranges_for_line(&sensors, target_y);
 
-            let filtered_ranges: Vec<&Range> = ranges.iter().filter(|range| range.start <= 4000000 && range.end >= 0).collect();
+            let filtered_ranges: Vec<&Range> = ranges
+                .iter()
+                .filter(|range| range.start <= 4000000 && range.end >= 0)
+                .collect();
             let first_range: &Range = filtered_ranges.get(0).unwrap();
 
             if filtered_ranges.len() > 1 {
@@ -63,7 +70,9 @@ fn get_merged_ranges_for_line(sensors: &Vec<Sensor>, target_y: isize) -> Vec<Ran
 }
 
 fn parse_sensors(file: &String) -> (Vec<Sensor>, HashSet<Point>) {
-    let parsing_regex = Regex::new(r"^Sensor at x=(-?\d+), y=(-?\d+): closest beacon is at x=(-?\d+), y=(-?\d+)$").unwrap();
+    let parsing_regex =
+        Regex::new(r"^Sensor at x=(-?\d+), y=(-?\d+): closest beacon is at x=(-?\d+), y=(-?\d+)$")
+            .unwrap();
     let mut sensors: Vec<Sensor> = vec![];
     let mut beacons: HashSet<Point> = HashSet::new();
 
@@ -117,14 +126,19 @@ impl Range {
         if self.start <= other.end && self.end >= other.start {
             self.start = self.start.min(other.start);
             self.end = self.end.max(other.end);
-            return true
+            return true;
         }
         false
     }
 }
 
 fn parse_regex_match(regex_capture: &Captures, group: usize) -> isize {
-    regex_capture.get(group).unwrap().as_str().parse::<isize>().expect("Unexpected value when parsing regex")
+    regex_capture
+        .get(group)
+        .unwrap()
+        .as_str()
+        .parse::<isize>()
+        .expect("Unexpected value when parsing regex")
 }
 
 fn merge_all_ranges(ranges: Vec<Range>) -> Vec<Range> {
@@ -145,5 +159,9 @@ fn merge_all_ranges(ranges: Vec<Range>) -> Vec<Range> {
         }
     }
 
-    if has_combination { merge_all_ranges(new_ranges) } else { new_ranges }
+    if has_combination {
+        merge_all_ranges(new_ranges)
+    } else {
+        new_ranges
+    }
 }
