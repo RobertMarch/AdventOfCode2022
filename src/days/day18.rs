@@ -10,12 +10,16 @@ impl Day for Day18 {
 
         count_rock_faces(&rock_points).to_string()
     }
-    
+
     fn solve_b(&self, file: &String) -> String {
         let rock_points = parse_input(file);
         let rock_dimensions = RockDimensions::from_point_set(&rock_points);
 
-        let air_points: HashSet<Point> = get_all_air(rock_dimensions.get_start_air_point(), &rock_points, &rock_dimensions);
+        let air_points: HashSet<Point> = get_all_air(
+            rock_dimensions.get_start_air_point(),
+            &rock_points,
+            &rock_dimensions,
+        );
 
         let all_rock: HashSet<Point> = &rock_dimensions.get_all_points() - &air_points;
 
@@ -27,7 +31,10 @@ fn parse_input(input: &String) -> HashSet<Point> {
     let mut rock_points: HashSet<Point> = HashSet::new();
 
     for line in input.lines() {
-        let parts: Vec<isize> = line.split(",").map(|coord| coord.parse::<isize>().expect("Unexpected value")).collect();
+        let parts: Vec<isize> = line
+            .split(",")
+            .map(|coord| coord.parse::<isize>().expect("Unexpected value"))
+            .collect();
         rock_points.insert((parts[0], parts[1], parts[2]));
     }
 
@@ -48,7 +55,11 @@ fn count_rock_faces(rock_points: &HashSet<Point>) -> usize {
     result
 }
 
-fn get_all_air(start: Point, rock_points: &HashSet<Point>, rock_dimensions: &RockDimensions) -> HashSet<Point> {
+fn get_all_air(
+    start: Point,
+    rock_points: &HashSet<Point>,
+    rock_dimensions: &RockDimensions,
+) -> HashSet<Point> {
     let mut air_points: HashSet<Point> = HashSet::new();
     let mut neighbours: HashSet<Point> = HashSet::new();
     neighbours.insert(start);
@@ -57,7 +68,10 @@ fn get_all_air(start: Point, rock_points: &HashSet<Point>, rock_dimensions: &Roc
         let next_point = neighbours.iter().next().unwrap().clone();
 
         for neighbour in get_neighbours(&next_point) {
-            if rock_points.contains(&neighbour) || air_points.contains(&neighbour) || !rock_dimensions.is_in_range(&neighbour) {
+            if rock_points.contains(&neighbour)
+                || air_points.contains(&neighbour)
+                || !rock_dimensions.is_in_range(&neighbour)
+            {
                 continue;
             }
 
@@ -79,7 +93,8 @@ fn get_neighbours(point: &Point) -> Vec<Point> {
         (0, -1, 0),
         (0, 0, 1),
         (0, 0, -1),
-    ].iter()
+    ]
+    .iter()
     .map(|p| Point::add(&point, &p))
     .collect()
 }
@@ -106,9 +121,12 @@ impl RockDimensions {
     }
 
     fn is_in_range(&self, point: &Point) -> bool {
-        self.min_x - 1 <= point.0 && point.0 <= self.max_x + 1
-        && self.min_y - 1 <= point.1 && point.1 <= self.max_y + 1
-        && self.min_z - 1 <= point.2 && point.2 <= self.max_z + 1
+        self.min_x - 1 <= point.0
+            && point.0 <= self.max_x + 1
+            && self.min_y - 1 <= point.1
+            && point.1 <= self.max_y + 1
+            && self.min_z - 1 <= point.2
+            && point.2 <= self.max_z + 1
     }
 
     fn get_start_air_point(&self) -> Point {
@@ -118,9 +136,9 @@ impl RockDimensions {
     fn get_all_points(&self) -> HashSet<Point> {
         let mut all_points: HashSet<Point> = HashSet::new();
 
-        for x in self.min_x-1..self.max_x+1 {
-            for y in self.min_y-1..self.max_y+1 {
-                for z in self.min_z-1..self.max_z+1 {
+        for x in self.min_x - 1..self.max_x + 1 {
+            for y in self.min_y - 1..self.max_y + 1 {
+                for z in self.min_z - 1..self.max_z + 1 {
                     all_points.insert((x, y, z));
                 }
             }

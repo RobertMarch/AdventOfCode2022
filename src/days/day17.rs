@@ -19,7 +19,7 @@ impl Day for Day17 {
         let additional_height = get_height_after_rocks(file, additional_rocks);
 
         let result: usize = repeat_loops * repeat_rock_height + additional_height;
-        
+
         result.to_string()
     }
 }
@@ -86,7 +86,10 @@ fn get_repeat_info(input: &String, max_total: usize) -> (usize, usize) {
                     first_repeat_rock_number = rock_number;
                     first_repeat_rock_height = max_height as usize;
                 } else {
-                    return (rock_number - first_repeat_rock_number, max_height as usize - first_repeat_rock_height);
+                    return (
+                        rock_number - first_repeat_rock_number,
+                        max_height as usize - first_repeat_rock_height,
+                    );
                 }
             }
 
@@ -177,7 +180,7 @@ fn get_max_height(rock_positions: &HashSet<Point>) -> isize {
 fn _display_rock(rock: &HashSet<Point>, top_n_rows: isize) {
     let max_height: isize = rock.iter().max_by(|a, b| a.y.cmp(&b.y)).unwrap().y;
 
-    for y in (max_height-top_n_rows)..max_height + 1 {
+    for y in (max_height - top_n_rows)..max_height + 1 {
         for x in 0..7 {
             if rock.contains(&Point::new(x, max_height - y)) {
                 print!("#");
