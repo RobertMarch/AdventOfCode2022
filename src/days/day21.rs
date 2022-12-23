@@ -23,10 +23,14 @@ fn solve(file: &String, target_monkey: &str, is_part_b: bool) -> String {
             old_monkey.evaluate(&mut monkeys);
         }
         if monkeys.get(target_monkey).unwrap().known_value.is_some() {
-            return monkeys.get(target_monkey).unwrap().known_value.unwrap().to_string();
+            return monkeys
+                .get(target_monkey)
+                .unwrap()
+                .known_value
+                .unwrap()
+                .to_string();
         }
     }
-
 }
 
 fn parse_monkeys(file: &String, is_part_b: bool) -> Monkeys {
@@ -58,11 +62,11 @@ fn parse_monkeys(file: &String, is_part_b: bool) -> Monkeys {
 
             monkeys.insert(
                 monkey_id.to_string(),
-                Monkey::new_value_monkey(monkey_id, monkey_value)
+                Monkey::new_value_monkey(monkey_id, monkey_value),
             );
         }
     }
-    
+
     monkeys
 }
 
@@ -100,10 +104,7 @@ impl Monkey {
         }
     }
 
-    fn new_value_monkey(
-        monkey_id: String,
-        value: isize,
-    ) -> Monkey {
+    fn new_value_monkey(monkey_id: String, value: isize) -> Monkey {
         Monkey {
             monkey_id: monkey_id.to_string(),
             operation: None,
